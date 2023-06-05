@@ -1,0 +1,9 @@
+.container{
+    display: flex;
+    justify-content: center;
+}
+
+.card{
+    /* align-items: center; */
+    margin-top: 15%;
+}
