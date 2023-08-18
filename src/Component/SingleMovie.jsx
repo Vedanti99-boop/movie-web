@@ -8,17 +8,17 @@ import "./SingleMovie.css"
 const SingleMovie = () => {
   const { id } = useParams();
 
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [movie, setMovie] = useState("");
 
   const getMovies = async (url) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
       const res = await fetch(url);
       const data = await res.json();
       console.log(data);
       if (data.Response === "True") {
-        setIsLoading(false);
+        // setIsLoading(false);
         setMovie(data);
 
         setIsError({
@@ -37,31 +37,47 @@ const SingleMovie = () => {
   };
 
   useEffect(() => {
-    let timerOut = setTimeout(() => {
-      getMovies(`${API}&i=${id}`);
-    }, 800);
-
-    return () => clearTimeout(timerOut);
+    const getMovies = async () => {
+      try {
+        const res = await fetch(`${API}&i=${id}`);
+        const data = await res.json();
+        console.log(data);
+        if (data.Response === "True") {
+          setMovie(data);
+        } else {
+          // Handle error if necessary
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+  
+    getMovies();
+  
+    // Clean up function
+    return () => {
+      // Cleanup tasks, if any
+    };
   }, [id]);
+  
 
-  if (isLoading) {
-    return (
-      <div>
-        <h2>Loading...</h2>
-      </div>
-    );
-  }
+
+  
+
+  // if (isLoading) {
+  //   return (
+  //     <div>
+  //       <h2>Loading...</h2>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <section className="container " >
-      <div className="card mb-3 " style={{ maxWidth: "540px" }}>
-        <div className="row g-0 ">
+    <section className="container">
+      <div className="card mb-3" style={{ maxWidth: "540px" }}>
+        <div className="row g-0">
           <div className="col-md-4">
-            <img
-              src={movie.Poster}
-              className="img-fluid rounded-start"
-              alt="..."
-            />
+            <img src={movie.Poster} className="img-fluid rounded-start" alt="..." />
           </div>
           <div className="col-md-8">
             <div className="card-body">
@@ -71,7 +87,7 @@ const SingleMovie = () => {
               <p className="card-text">{movie.imdbRating}</p>
               <p className="card-text">{movie.Country}</p>
               <NavLink to="/">
-              <button className="btn btn-primary">Go Back</button>
+                <button className="btn btn-primary">Go Back</button>
               </NavLink>
             </div>
           </div>
@@ -79,6 +95,7 @@ const SingleMovie = () => {
       </div>
     </section>
   );
+  
 };
 
 export default SingleMovie;

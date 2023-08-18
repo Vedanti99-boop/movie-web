@@ -6,19 +6,19 @@ const AppContext=React.createContext()
 
 const AppProvider=({children})=>{
 
-    const [isLoading,setIsLoading]=useState(true)
+    //const [isLoading,setIsLoading]=useState(true)
     const[movie,setMovie]=useState([])
     const [isError,setIsError]=useState({show:false,msg:""})
     const [query,setQuery]=useState("titanic")
 
     const getMovies=async(url)=>{
-        setIsLoading(true)
+       // setIsLoading(true)
         try{
             const res = await fetch(url)
             const data=await res.json()
-            console.log(data)
+            console.log(data.Search)
             if(data.Response==="True"){
-                setIsLoading(false)
+               // setIsLoading(false)
                 setMovie(data.Search)
 
                 setIsError({
@@ -46,7 +46,7 @@ const AppProvider=({children})=>{
         return()=>clearTimeout(timerOut)
 
     },[query])
-   return <AppContext.Provider value={{isLoading,isError,movie,query,setQuery}}>{children}</AppContext.Provider>
+   return <AppContext.Provider value={{isError,movie,query,setQuery}}>{children}</AppContext.Provider>
 }
 
 const useGlobalContext=()=>{
